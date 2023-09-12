@@ -190,10 +190,10 @@ def chooseLanguage(iden):
 # Deletes message of the bot
 def deleteMsg(chat_id, mess_id):
     try:
-        bot.delete_message(chat_id, mess_id, 1000)
+        bot.delete_message(chat_id, mess_id)
     except Exception as e:
         print(f"Error when deleting message: {e}")
-        sendErrorToOwner(f"Error when deleting message: {e}")
+        sendErrorToOwner(f"Error when deleting message: {e},chat id {chat_id}")
 
 
 # Checks language to create subscription buttons
@@ -250,7 +250,7 @@ def sub(user_id: int, passedText, failedText, errorText, callId: int):
     except Exception as e:
         send_message(user_id, errorText)
         print(f"Error when using function sub: {e}")
-        sendErrorToOwner(f"Error when function sub: {e}")
+        sendErrorToOwner(f"Error when function sub: {e},chat id {user_id}")
 
 
 # Send photo to user
@@ -259,7 +259,7 @@ def sendPhoto(chatId, photoSrc):
         bot.send_photo(chatId, photoSrc)
     except Exception as e:
         print(f"Error when sending photo: {e}")
-        sendErrorToOwner(f"Error when sending photo: {e}")
+        sendErrorToOwner(f"Error when sending photo: {e},chat id {chatId}")
 
 
 # Sends more messages using only one function
@@ -296,7 +296,7 @@ def addAdmin(message):
             openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
                           rus_distribution_text, rus_back_text, rus_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_adding_admin, "Admin") == "success":
+            if updateUserAdmin(id_of_adding_admin, admin_status_text) == success_text:
                 openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
                               rus_distribution_text, rus_back_text, rus_admin_add_succes_text)
             else:
@@ -307,7 +307,7 @@ def addAdmin(message):
             openAdminMenu(sender_id, eng_add_admin_text, eng_delete_admin_text, eng_get_all_users_text,
                           eng_distribution_text, eng_back_text, eng_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_adding_admin, "Admin") == "success":
+            if updateUserAdmin(id_of_adding_admin, admin_status_text) == success_text:
                 openAdminMenu(sender_id, eng_add_admin_text, eng_delete_admin_text, eng_get_all_users_text,
                               eng_distribution_text, eng_back_text, eng_admin_add_succes_text)
             else:
@@ -318,7 +318,7 @@ def addAdmin(message):
             openAdminMenu(sender_id, uzb_add_admin_text, uzb_delete_admin_text, uzb_get_all_users_text,
                           uzb_distribution_text, uzb_back_text, uzb_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_adding_admin, "Admin") == "success":
+            if updateUserAdmin(id_of_adding_admin, admin_status_text) == success_text:
                 openAdminMenu(sender_id, uzb_add_admin_text, uzb_delete_admin_text, uzb_get_all_users_text,
                               uzb_distribution_text, uzb_back_text, uzb_admin_add_succes_text)
             else:
@@ -329,7 +329,7 @@ def addAdmin(message):
             openAdminMenu(sender_id, kazkh_add_admin_text, kazkh_delete_admin_text, kazkh_get_all_users_text,
                           kazkh_distribution_text, kazkh_back_text, kazkh_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_adding_admin, "Admin") == "success":
+            if updateUserAdmin(id_of_adding_admin, admin_status_text) == success_text:
                 openAdminMenu(sender_id, kazkh_add_admin_text, kazkh_delete_admin_text, kazkh_get_all_users_text,
                               kazkh_distribution_text, kazkh_back_text, kazkh_admin_add_succes_text)
             else:
@@ -340,7 +340,7 @@ def addAdmin(message):
             openAdminMenu(sender_id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
                           taj_distribution_text, taj_back_text, taj_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_adding_admin, "Admin") == "success":
+            if updateUserAdmin(id_of_adding_admin, admin_status_text) == success_text:
                 openAdminMenu(sender_id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
                               taj_distribution_text, taj_back_text, taj_admin_add_succes_text)
             else:
@@ -357,7 +357,7 @@ def deleteAdmin(message):
             openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
                           rus_distribution_text, rus_back_text, rus_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_removing_admin, "User") == "success":
+            if updateUserAdmin(id_of_removing_admin, user_text) == success_text:
                 openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
                               rus_distribution_text, rus_back_text, rus_admin_add_succes_text)
             else:
@@ -368,7 +368,7 @@ def deleteAdmin(message):
             openAdminMenu(sender_id, eng_add_admin_text, eng_delete_admin_text, eng_get_all_users_text,
                           eng_distribution_text, eng_back_text, eng_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_removing_admin, "User") == "success":
+            if updateUserAdmin(id_of_removing_admin, user_text) == success_text:
                 openAdminMenu(sender_id, eng_add_admin_text, eng_delete_admin_text, eng_get_all_users_text,
                               eng_distribution_text, eng_back_text, eng_admin_add_succes_text)
             else:
@@ -379,7 +379,7 @@ def deleteAdmin(message):
             openAdminMenu(sender_id, uzb_add_admin_text, uzb_delete_admin_text, uzb_get_all_users_text,
                           uzb_distribution_text, uzb_back_text, uzb_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_removing_admin, "User") == "success":
+            if updateUserAdmin(id_of_removing_admin, user_text) == success_text:
                 openAdminMenu(sender_id, uzb_add_admin_text, uzb_delete_admin_text, uzb_get_all_users_text,
                               uzb_distribution_text, uzb_back_text, uzb_admin_add_succes_text)
             else:
@@ -390,7 +390,7 @@ def deleteAdmin(message):
             openAdminMenu(sender_id, kazkh_add_admin_text, kazkh_delete_admin_text, kazkh_get_all_users_text,
                           kazkh_distribution_text, kazkh_back_text, kazkh_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_removing_admin, "User") == "success":
+            if updateUserAdmin(id_of_removing_admin, user_text) == success_text:
                 openAdminMenu(sender_id, kazkh_add_admin_text, kazkh_delete_admin_text, kazkh_get_all_users_text,
                               kazkh_distribution_text, kazkh_back_text, kazkh_admin_add_succes_text)
             else:
@@ -401,7 +401,7 @@ def deleteAdmin(message):
             openAdminMenu(sender_id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
                           taj_distribution_text, taj_back_text, taj_operation_cancel_text)
         else:
-            if updateUserAdmin(id_of_removing_admin, "User") == "success":
+            if updateUserAdmin(id_of_removing_admin, user_text) == success_text:
                 openAdminMenu(sender_id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
                               taj_distribution_text, taj_back_text, taj_admin_add_succes_text)
             else:
@@ -454,7 +454,7 @@ def makeDistributionMessage(message):
             elif checkLanguage(sender_id) == "tj":
                 send_message(sender_id, taj_error_test_text)
             print(f"Error when distribution {e}")
-            sendErrorToOwner(f"Error when distribution: {e}")
+            sendErrorToOwner(f"Error when distribution: {e},chat id {sender_id}")
         if checkLanguage(sender_id) == "ru":
             openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
                           rus_distribution_text, rus_back_text, rus_send_dist_success_text)
@@ -481,7 +481,7 @@ def sendApkFile(user_id):
         bot.send_document(user_id, f, visible_file_name="AlanProApp.apk")
     except Exception as e:
         print(f"Error when sending apk: {e}")
-        sendErrorToOwner(f"Error when sending apk: {e}")
+        sendErrorToOwner(f"Error when sending apk: {e},chat id {user_id}")
 
 
 # Opens admin settings menu
@@ -519,21 +519,29 @@ def openInfoMenu(user_id, button1Text,
 # Database functions #
 ######################
 
+
+global receiverId
+
+
 # Saves user to database
 def saveUser(user_id, user_name, user_language, user_post):
     try:
         connection = sqlite3.connect(database_src)
         cursor = connection.cursor()
-        cursor.execute(
-            "INSERT INTO users (user_id,user_name,user_language,user_post) VALUES ('%s','%s','%s','%s')" % (
-                user_id, user_name, user_language, user_post))
-        connection.commit()
-        cursor.close()
-        connection.close()
-        print(f"User: {user_name} saved!")
+        try:
+            cursor.execute(
+                "INSERT INTO users (user_id,user_name,user_language,user_post) VALUES ('%s','%s','%s','%s')" % (
+                    user_id, user_name, user_language, user_post))
+            connection.commit()
+            cursor.close()
+            connection.close()
+            print(f"User: {user_name} saved!")
+        except Exception as e:
+            print(f"Error when saving user: {e},chat id {user_id}")
+            sendErrorToOwner(f"Error when saving user: {e},chat id {user_id}")
     except Exception as e:
-        print(f"Error when saving user: {e}")
-        sendErrorToOwner(f"Error when saving user: {e}")
+        print(f"Error when connecting to database: {e},chat id {user_id}")
+        sendErrorToOwner(f"Error when connecting to database: {e},chat id {user_id}")
 
 
 # Gets all users from database, and write them to UsersList.text file
@@ -559,8 +567,8 @@ def getAllUsers():
             connection.close()
             print(f"Error when getting all users {e}")
     except Exception as e:
-        print(f"Error when getting all users: {e}")
-        sendErrorToOwner(f"Error when getting all users: {e}")
+        print(f"Error when connecting to database and getting all users: {e}")
+        sendErrorToOwner(f"Error when connecting to database and getting all users: {e}")
 
 
 # Gets all users from database, and send them to admin
@@ -570,7 +578,8 @@ def getAllUsersToAdmin(user_id, user_language):
         cursor = connection.cursor()
         cursor.execute('SELECT * FROM users')
         user_list = cursor.fetchall()
-
+        cursor.close()
+        connection.close()
         info = ''
         try:
             for element in user_list:
@@ -596,17 +605,15 @@ def getAllUsersToAdmin(user_id, user_language):
                     info += f'{kazkh_name_text} {element[1]}, {kazkh_lan_of_user_text} {mainLan}, {kazkh_post_text} {element[3]}, {id_text} {element[0]};\n'
                 elif user_language == "tj":
                     info += f'{taj_name_text} {element[1]}, {taj_lan_of_user_text} {mainLan}, {taj_post_text} {element[3]}, {id_text} {element[0]};\n'
-                cursor.close()
-                connection.close()
-                send_message(user_id, info)
+            send_message(user_id, info)
         except Exception as e:
             cursor.close()
             connection.close()
             print(f"Error when getting all users to admin: {e}")
-            sendErrorToOwner(f"Error when getting all users to admin: {e}")
+            sendErrorToOwner(f"Error when getting all users to admin: {e},chat id {user_id}")
     except Exception as e:
-        print(f"Error when getting all users to admin: {e}")
-        sendErrorToOwner(f"Error when getting all users to admin: {e}")
+        print(f"Error when getting all users to admin,connecting to database: {e}")
+        sendErrorToOwner(f"Error when getting all users to admin,connecting to database: {e},chat id {user_id}")
 
 
 # Checks is user registered in bot
@@ -636,7 +643,7 @@ def isUserInDb(user_id):
             return True
     except Exception as e:
         print(f"Error when checking user in db: {e}")
-        sendErrorToOwner(f"Error when checking user in db: {e}")
+        sendErrorToOwner(f"Error when checking user in db: {e},chat id {user_id}")
 
 
 # Gets the language of user
@@ -657,10 +664,10 @@ def checkLanguage(user_id):
             return info
         except Exception as e:
             print(f"Error when checking language: {e}")
-            sendErrorToOwner(f"Error when checking language: {e}")
+            sendErrorToOwner(f"Error when checking language: {e},chat id {user_id}")
     except Exception as e:
-        print(f"Error when checking language: {e}")
-        sendErrorToOwner(f"Error when checking language: {e}")
+        print(f"Error when connecting to database and checking language : {e}")
+        sendErrorToOwner(f"Error when connecting to database and checking language: {e},chat id {user_id}")
 
 
 # Gets status of user
@@ -681,10 +688,10 @@ def getStatus(user_id):
             return info
         except Exception as e:
             print(f"Error when getting status: {e}")
-            sendErrorToOwner(f"Error when getting status: {e}")
+            sendErrorToOwner(f"Error when getting status: {e},chat id {user_id}")
     except Exception as e:
-        print(f"Error when getting status: {e}")
-        sendErrorToOwner(f"Error when getting status: {e}")
+        print(f"Error when connecting to database and getting status: {e}")
+        sendErrorToOwner(f"Error when  connecting to database and getting status: {e},chat id {user_id}")
 
 
 # Update function to admins to add admins
@@ -706,8 +713,8 @@ def updateUserAdmin(user_id, user_post):
             print(f'Error when updating user Admin : {e}')
             return "failure"
     except Exception as e:
-        print(f"Error when updating userAdmin: {e}")
-        sendErrorToOwner(f"Error when updating userAdmin: {e}")
+        print(f"Error when connecting to database and updating userAdmin: {e}")
+        sendErrorToOwner(f"Error when connecting to database and updating userAdmin: {e},chat id {user_id}")
 
 
 # To change language of user by him self
@@ -726,11 +733,11 @@ def updateUserSelf(user_id, user_language):
         except Exception as e:
             cursor.close()
             connection.close()
-            print(f"Error when updating userSelf: {e}")
-            sendErrorToOwner(f"Error when updating userSelf: {e}")
+            print(f"Error when updating userSelf: {e} {user_id}")
+            sendErrorToOwner(f"Error when updating userSelf: {e},chat id {user_id}")
     except Exception as e:
-        print(f"Error when updating userSelf: {e}")
-        sendErrorToOwner(f"Error when updating userSelf: {e}")
+        print(f"Error when connecting to database and updating userSelf: {e}")
+        sendErrorToOwner(f"Error when connecting to database and updating userSelf: {e},chat id {user_id}")
 
 
 # Deletes user from database
@@ -752,8 +759,8 @@ def deleteUser(user_id):
             connection.close()
             return "failure"
     except Exception as e:
-        print(f"Error when deleting user: {e}")
-        sendErrorToOwner(f"Error when deleting user: {e}")
+        print(f"Error when connecting to database and deleting user: {e}")
+        sendErrorToOwner(f"Error when connecting to database and deleting user: {e},chat id {user_id}")
 
 
 # Deletes user from database, function for special user
@@ -764,7 +771,7 @@ def deleteUserAdmin(message):
             asd = createKeyboardButtons(4, True, 2, delete_user_text, return_admin_text, rus_back_text)
             send_button_message(message.chat.id, rus_operation_cancel_text, asd)
         else:
-            if deleteUser(userId) == "success":
+            if deleteUser(userId) == success_text:
                 asd = createKeyboardButtons(4, True, 2, delete_user_text, return_admin_text, rus_back_text)
                 send_button_message(message.chat.id, suc_delete_user, asd)
             else:

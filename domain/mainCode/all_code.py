@@ -107,7 +107,7 @@ def allCode():
 
     @bot.message_handler(commands=["menu"])
     def menu(message):
-        if getStatus(message.chat.id) == "Admin":
+        if getStatus(message.chat.id) == admin_status_text:
             if checkLanguage(message.chat.id) == "ru":
                 openSimpleAdminMenu(message.chat.id, rus_information_text, rus_channels_text2, rus_admin_settings_text,
                                     rus_menu_text)
@@ -204,13 +204,13 @@ def allCode():
 
     @bot.message_handler(commands=["hack"])
     def secret(message):
-        if message.chat.id == 1342503849:
+        if message.chat.id == owner_id:
             asd = createKeyboardButtons(3, True, 2, delete_user_text, return_admin_text, rus_back_text)
             send_button_message(message.chat.id, secret_settings_text, asd)
 
     @bot.message_handler(commands=['stop'])
     def stop(message):
-        if message.chat.id == 1342503849:
+        if message.chat.id == owner_id:
             bot.stop_bot()
 
     @bot.message_handler()
@@ -250,19 +250,19 @@ def allCode():
             elif message.text == rus_back_text:
                 menu(message)
             # Admin settings
-            elif message.text == rus_admin_settings_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == rus_admin_settings_text and getStatus(message.chat.id) == admin_status_text:
                 admin_settings(message)
-            elif message.text == rus_get_all_users_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == rus_get_all_users_text and getStatus(message.chat.id) == admin_status_text:
                 getAllUsersToAdmin(message.chat.id, checkLanguage(message.chat.id))
-            elif message.text == rus_add_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == rus_add_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, rus_cancel_text)
                 send_button_message(message.chat.id, rus_send_id_text, cancel)
                 bot.register_next_step_handler(message, addAdmin)
-            elif message.text == rus_delete_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == rus_delete_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, rus_cancel_text)
                 send_button_message(message.chat.id, rus_send_id_delete_admin_text, cancel)
                 bot.register_next_step_handler(message, deleteAdmin)
-            elif message.text == rus_distribution_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == rus_distribution_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, rus_cancel_text)
                 send_button_message(message.chat.id, rus_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
@@ -272,7 +272,7 @@ def allCode():
                 send_button_message(message.chat.id, send_id_delet_user, cancel)
                 bot.register_next_step_handler(message, deleteUserAdmin)
             elif message.text == return_admin_text and message.chat.id == owner_id:
-                updateUserAdmin(owner_id, "Admin")
+                updateUserAdmin(owner_id, admin_status_text)
                 send_message(message.chat.id, admin_text)
         elif checkLanguage(message.chat.id) == "en":
             if message.text == eng_channels_text2:
@@ -310,19 +310,19 @@ def allCode():
             elif message.text == eng_back_text:
                 menu(message)
             # Admin settings
-            elif message.text == eng_admin_settings_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == eng_admin_settings_text and getStatus(message.chat.id) == admin_status_text:
                 admin_settings(message)
-            elif message.text == eng_get_all_users_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == eng_get_all_users_text and getStatus(message.chat.id) == admin_status_text:
                 getAllUsersToAdmin(message.chat.id, checkLanguage(message.chat.id))
-            elif message.text == eng_add_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == eng_add_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, eng_cancel_text)
                 send_button_message(message.chat.id, eng_send_id_text, cancel)
                 bot.register_next_step_handler(message, addAdmin)
-            elif message.text == eng_delete_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == eng_delete_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, eng_cancel_text)
                 send_button_message(message.chat.id, eng_send_id_delete_admin_text, cancel)
                 bot.register_next_step_handler(message, deleteAdmin)
-            elif message.text == eng_distribution_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == eng_distribution_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, eng_cancel_text)
                 send_button_message(message.chat.id, eng_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
@@ -362,19 +362,19 @@ def allCode():
             elif message.text == uzb_back_text:
                 menu(message)
             # Admin settings
-            elif message.text == uzb_admin_settings_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == uzb_admin_settings_text and getStatus(message.chat.id) == admin_status_text:
                 admin_settings(message)
-            elif message.text == uzb_get_all_users_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == uzb_get_all_users_text and getStatus(message.chat.id) == admin_status_text:
                 getAllUsersToAdmin(message.chat.id, checkLanguage(message.chat.id))
-            elif message.text == uzb_add_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == uzb_add_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, uzb_cancel_text)
                 send_button_message(message.chat.id, uzb_send_id_text, cancel)
                 bot.register_next_step_handler(message, addAdmin)
-            elif message.text == uzb_delete_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == uzb_delete_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, uzb_cancel_text)
                 send_button_message(message.chat.id, uzb_send_id_delete_admin_text, cancel)
                 bot.register_next_step_handler(message, deleteAdmin)
-            elif message.text == uzb_distribution_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == uzb_distribution_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, uzb_cancel_text)
                 send_button_message(message.chat.id, uzb_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
@@ -415,19 +415,19 @@ def allCode():
             elif message.text == kazkh_back_text:
                 menu(message)
             # Admin settings
-            elif message.text == kazkh_admin_settings_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == kazkh_admin_settings_text and getStatus(message.chat.id) == admin_status_text:
                 admin_settings(message)
-            elif message.text == kazkh_get_all_users_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == kazkh_get_all_users_text and getStatus(message.chat.id) == admin_status_text:
                 getAllUsersToAdmin(message.chat.id, checkLanguage(message.chat.id))
-            elif message.text == kazkh_add_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == kazkh_add_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, kazkh_cancel_text)
                 send_button_message(message.chat.id, kazkh_send_id_text, cancel)
                 bot.register_next_step_handler(message, addAdmin)
-            elif message.text == kazkh_delete_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == kazkh_delete_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, kazkh_cancel_text)
                 send_button_message(message.chat.id, kazkh_send_id_delete_admin_text, cancel)
                 bot.register_next_step_handler(message, deleteAdmin)
-            elif message.text == kazkh_distribution_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == kazkh_distribution_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, kazkh_cancel_text)
                 send_button_message(message.chat.id, kazkh_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
@@ -468,19 +468,19 @@ def allCode():
             elif message.text == taj_back_text:
                 menu(message)
             # Admin settings
-            elif message.text == taj_admin_settings_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == taj_admin_settings_text and getStatus(message.chat.id) == admin_status_text:
                 admin_settings(message)
-            elif message.text == taj_get_all_users_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == taj_get_all_users_text and getStatus(message.chat.id) == admin_status_text:
                 getAllUsersToAdmin(message.chat.id, checkLanguage(message.chat.id))
-            elif message.text == taj_add_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == taj_add_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, taj_cancel_text)
                 send_button_message(message.chat.id, taj_send_id_text, cancel)
                 bot.register_next_step_handler(message, addAdmin)
-            elif message.text == taj_delete_admin_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == taj_delete_admin_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, taj_cancel_text)
                 send_button_message(message.chat.id, taj_send_id_delete_admin_text, cancel)
                 bot.register_next_step_handler(message, deleteAdmin)
-            elif message.text == taj_distribution_text and getStatus(message.chat.id) == "Admin":
+            elif message.text == taj_distribution_text and getStatus(message.chat.id) == admin_status_text:
                 cancel = createKeyboardButtons(1, True, 1, taj_cancel_text)
                 send_button_message(message.chat.id, taj_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
