@@ -4,6 +4,8 @@
 
 eng_text = "English"
 
+eng_value_error_text = "📛Error! Enter the user ID as shown in the photo below⬇️"
+
 eng_name_text = "👤Name:"
 eng_lan_of_user_text = "Language:"
 eng_post_text = "Post:"

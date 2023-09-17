@@ -4,6 +4,8 @@
 
 kaz_text = "Қазақша"
 
+kazkh_value_error_text = "📛Qate! Tómendegi sýrette kórsetilgendeı⬇️ paıdalanýshy ıdentıfıkatoryn engizińiz️ ️"
+
 kazkh_name_text = "👤Аты:"
 kazkh_lan_of_user_text = "Тіл:"
 kazkh_post_text = "Мәртебесі:"

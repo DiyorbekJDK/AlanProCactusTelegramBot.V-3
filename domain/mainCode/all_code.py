@@ -13,6 +13,8 @@ from data.util.links import *
 
 bot = telebot.TeleBot(bot_token)
 
+userName = ""
+
 
 def allCode():
     getAllUsers()
@@ -266,6 +268,9 @@ def allCode():
                 cancel = createKeyboardButtons(1, True, 1, rus_cancel_text)
                 send_button_message(message.chat.id, rus_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
+            elif message.text == rus_cancel_text and getStatus(message.chat.id) == admin_status_text:
+                openAdminMenu(message.chat.id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
+                              rus_distribution_text, rus_back_text, rus_operation_cancel_text)
                 # Secret settings
             elif message.text == delete_user_text and message.chat.id == owner_id:
                 cancel = createKeyboardButtons(1, True, 1, rus_cancel_text)
@@ -326,6 +331,9 @@ def allCode():
                 cancel = createKeyboardButtons(1, True, 1, eng_cancel_text)
                 send_button_message(message.chat.id, eng_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
+            elif message.text == eng_cancel_text and getStatus(message.chat.id) == admin_status_text:
+                openAdminMenu(message.chat.id, eng_add_admin_text, eng_delete_admin_text, eng_get_all_users_text,
+                              eng_distribution_text, eng_back_text, eng_operation_cancel_text)
         elif checkLanguage(message.chat.id) == "uz":
             if message.text == uzb_channels_text2:
                 channels(message)
@@ -378,6 +386,9 @@ def allCode():
                 cancel = createKeyboardButtons(1, True, 1, uzb_cancel_text)
                 send_button_message(message.chat.id, uzb_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
+            elif message.text == uzb_cancel_text and getStatus(message.chat.id) == admin_status_text:
+                openAdminMenu(message.chat.id, uzb_add_admin_text, uzb_delete_admin_text, uzb_get_all_users_text,
+                              uzb_distribution_text, uzb_back_text, uzb_operation_cancel_text)
         elif checkLanguage(message.chat.id) == "kz":
             if message.text == kazkh_channels_text2:
                 channels(message)
@@ -431,6 +442,9 @@ def allCode():
                 cancel = createKeyboardButtons(1, True, 1, kazkh_cancel_text)
                 send_button_message(message.chat.id, kazkh_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
+            elif message.text == kazkh_cancel_text and getStatus(message.chat.id) == admin_status_text:
+                openAdminMenu(message.chat.id, kazkh_add_admin_text, kazkh_delete_admin_text, kazkh_get_all_users_text,
+                              kazkh_distribution_text, kazkh_back_text, kazkh_operation_cancel_text)
         elif checkLanguage(message.chat.id) == "tj":
             if message.text == taj_channels_text2:
                 channels(message)
@@ -484,5 +498,8 @@ def allCode():
                 cancel = createKeyboardButtons(1, True, 1, taj_cancel_text)
                 send_button_message(message.chat.id, taj_send_dist_text, cancel)
                 bot.register_next_step_handler(message, makeDistributionMessage)
+            elif message.text == taj_cancel_text and getStatus(message.chat.id) == admin_status_text:
+                openAdminMenu(message.chat.id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
+                              taj_distribution_text, taj_back_text, taj_operation_cancel_text)
 
     bot.polling(none_stop=True)

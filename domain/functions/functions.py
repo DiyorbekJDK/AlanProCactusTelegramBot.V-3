@@ -289,8 +289,48 @@ def updateUserLanguage(user_id):
 
 # Gives admin status to user
 def addAdmin(message):
-    id_of_adding_admin = message.text.strip()
     sender_id = message.chat.id
+    id_of_adding_admin = message.text.strip()
+    try:
+        if id_of_adding_admin == rus_cancel_text:
+            pass
+        elif id_of_adding_admin == eng_cancel_text:
+            pass
+        elif id_of_adding_admin == uzb_cancel_text:
+            pass
+        elif id_of_adding_admin == kazkh_cancel_text:
+            pass
+        elif id_of_adding_admin == taj_cancel_text:
+            pass
+        else:
+            id_of_adding_admin = int(message.text.strip())
+    except ValueError:
+        if checkLanguage(sender_id) == "ru":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
+                          rus_distribution_text, rus_back_text, rus_operation_cancel_text)
+        elif checkLanguage(sender_id) == "en":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, eng_add_admin_text, eng_delete_admin_text, eng_get_all_users_text,
+                          eng_distribution_text, eng_back_text, eng_operation_cancel_text)
+        elif checkLanguage(sender_id) == "uz":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, uzb_add_admin_text, uzb_delete_admin_text, uzb_get_all_users_text,
+                          uzb_distribution_text, uzb_back_text, uzb_operation_cancel_text)
+        elif checkLanguage(sender_id) == "kz":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, kazkh_add_admin_text, kazkh_delete_admin_text, kazkh_get_all_users_text,
+                          kazkh_distribution_text, kazkh_back_text, kazkh_operation_cancel_text)
+        elif checkLanguage(sender_id) == "tj":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
+                          taj_distribution_text, taj_back_text, taj_operation_cancel_text)
+        return
     if checkLanguage(sender_id) == "ru":
         if message.text == rus_cancel_text:
             openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
@@ -352,6 +392,46 @@ def addAdmin(message):
 def deleteAdmin(message):
     id_of_removing_admin = message.text.strip()
     sender_id = message.chat.id
+    try:
+        if id_of_removing_admin == rus_cancel_text:
+            pass
+        elif id_of_removing_admin == eng_cancel_text:
+            pass
+        elif id_of_removing_admin == uzb_cancel_text:
+            pass
+        elif id_of_removing_admin == kazkh_cancel_text:
+            pass
+        elif id_of_removing_admin == taj_cancel_text:
+            pass
+        else:
+            id_of_removing_admin = int(message.text.strip())
+    except ValueError:
+        if checkLanguage(sender_id) == "ru":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
+                          rus_distribution_text, rus_back_text, rus_operation_cancel_text)
+        elif checkLanguage(sender_id) == "en":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, eng_add_admin_text, eng_delete_admin_text, eng_get_all_users_text,
+                          eng_distribution_text, eng_back_text, eng_operation_cancel_text)
+        elif checkLanguage(sender_id) == "uz":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, uzb_add_admin_text, uzb_delete_admin_text, uzb_get_all_users_text,
+                          uzb_distribution_text, uzb_back_text, uzb_operation_cancel_text)
+        elif checkLanguage(sender_id) == "kz":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, kazkh_add_admin_text, kazkh_delete_admin_text, kazkh_get_all_users_text,
+                          kazkh_distribution_text, kazkh_back_text, kazkh_operation_cancel_text)
+        elif checkLanguage(sender_id) == "tj":
+            sendMakeError(sender_id)
+            sendPhoto(sender_id, enterIdPhoto)
+            openAdminMenu(sender_id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
+                          taj_distribution_text, taj_back_text, taj_operation_cancel_text)
+        return
     if checkLanguage(sender_id) == "ru":
         if message.text == rus_cancel_text:
             openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
@@ -493,17 +573,20 @@ def openAdminMenu(user_id, btn1Text: str, btn2Text: str, btn3Text: str, btn4Text
     send_button_message(user_id, replayedMessText, buttons)
 
 
+# Opens admin menu
 def openSimpleAdminMenu(user_id, btn1Text: str, btn2Text: str, btn3Text: str, menuText: str):
     butt = createKeyboardButtons(3, True, 2, btn1Text, btn2Text,
                                  btn3Text)
     send_button_message(user_id, menuText, replyMarkup=butt)
 
 
+# Opens simple main menu
 def openSimpleMenu(user_id, btn1Text: str, btn2Text: str, menuText: str):
     butt = createKeyboardButtons(2, True, 2, btn1Text, btn2Text)
     send_button_message(user_id, mess=menuText, replyMarkup=butt)
 
 
+# Opens InfoMenu
 def openInfoMenu(user_id, button1Text,
                  button2Text, button3Text, button4Text, button5Text, button6Text, button7Text, button8Text, button9Text,
                  menuText):
@@ -513,6 +596,20 @@ def openInfoMenu(user_id, button1Text,
                                     button8Text,
                                     button9Text)
     send_button_message(user_id, menuText, buttons)
+
+
+# Send error message to user
+def sendMakeError(user_id):
+    if checkLanguage(user_id) == "ru":
+        send_message(user_id, rus_value_error_text)
+    elif checkLanguage(user_id) == "en":
+        send_message(user_id, eng_value_error_text)
+    elif checkLanguage(user_id) == "uz":
+        send_message(user_id, uzb_value_error_text)
+    elif checkLanguage(user_id) == "kz":
+        send_message(user_id, kazkh_value_error_text)
+    elif checkLanguage(user_id) == "tj":
+        send_message(user_id, taj_value_error_text)
 
 
 ######################

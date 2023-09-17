@@ -19,3 +19,4 @@ owner_id = 1342503849
 database_src = "D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/database/BotDatabase.sql"
 user_list_src = "D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/database/UsersList.txt"
 apk_src = "D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/files/AlanProApp.apk"
+enterIdPhoto = open('D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/photos/enterIdPhoto.jpg', 'rb')
