@@ -228,9 +228,7 @@ def allCode():
                 sendMoreMessages(message.chat.id, 2, rus_desc_text, rus_channel_desc_text)
             elif message.text == rus_alan_photos_text:
                 try:
-                    sendPhoto(message.chat.id, photo)
-                    sendPhoto(message.chat.id, photo_two)
-                    sendPhoto(message.chat.id, photo_three)
+                    sendChannelPhotos(message.chat.id)
                 except Exception as e:
                     send_message(message.chat.id, rus_error_test_text)
                     print(f'Error when sending photo: {e}')
@@ -291,9 +289,7 @@ def allCode():
                 sendMoreMessages(message.chat.id, 2, eng_desc_text, eng_channel_desc_text)
             elif message.text == eng_alan_photos_text:
                 try:
-                    sendPhoto(message.chat.id, photo)
-                    sendPhoto(message.chat.id, photo_two)
-                    sendPhoto(message.chat.id, photo_three)
+                    sendChannelPhotos(message.chat.id)
                 except Exception as e:
                     send_message(message.chat.id, eng_error_test_text)
                     print(f'Error sending photo: {e}')
@@ -346,9 +342,7 @@ def allCode():
                 sendMoreMessages(message.chat.id, 2, uzb_desc_text, uzb_channel_desc_text)
             elif message.text == uzb_alan_photos_text:
                 try:
-                    sendPhoto(message.chat.id, photo)
-                    sendPhoto(message.chat.id, photo_two)
-                    sendPhoto(message.chat.id, photo_three)
+                    sendChannelPhotos(message.chat.id)
                 except Exception as e:
                     send_message(message.chat.id, uzb_error_test_text)
                     print(f'Error: {e}')
@@ -402,9 +396,7 @@ def allCode():
                 sendMoreMessages(message.chat.id, 2, kazkh_desc_text, kazkh_channel_desc_text)
             elif message.text == kazkh_alan_photos_text:
                 try:
-                    sendPhoto(message.chat.id, photo)
-                    sendPhoto(message.chat.id, photo_two)
-                    sendPhoto(message.chat.id, photo_three)
+                    sendChannelPhotos(message.chat.id)
                 except Exception as e:
                     send_message(message.chat.id, kazkh_error_test_text)
                     print(f'Error: {e}')
@@ -458,9 +450,7 @@ def allCode():
                 sendMoreMessages(message.chat.id, 2, taj_desc_text, taj_channel_desc_text)
             elif message.text == taj_alan_photos_text:
                 try:
-                    sendPhoto(message.chat.id, photo)
-                    sendPhoto(message.chat.id, photo_two)
-                    sendPhoto(message.chat.id, photo_three)
+                    sendChannelPhotos(message.chat.id)
                 except Exception as e:
                     send_message(message.chat.id, taj_error_test_text)
                     print(f'Error: {e}')

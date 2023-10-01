@@ -612,6 +612,12 @@ def sendMakeError(user_id):
         send_message(user_id, taj_value_error_text)
 
 
+def sendChannelPhotos(chat_id):
+    sendPhoto(chat_id, photo)
+    sendPhoto(chat_id, photo_two)
+    sendPhoto(chat_id, photo_three)
+    sendPhoto(chat_id, photo_four)
+
 ######################
 # Database functions #
 ######################

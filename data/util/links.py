@@ -12,6 +12,7 @@ popular_shorts = "https://youtube.com/shorts/imhNSPBTTSA?si=CqDfeUTLoz4qxTdZ"
 photo = open('D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/photos/channel_photo.jpg', 'rb')
 photo_two = open('D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/photos/new_photo.jpg', 'rb')
 photo_three = open('D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/photos/second_photo.jpg', 'rb')
+photo_four = open('D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/photos/newest_photo.jpg', 'rb')
 bot_creator_link = "https://t.me/diyorbekjdk_pft"
 talk_group_link = "https://t.me/Alan_pro_kaktusss"
 mocsolay_channel_link = "https://www.youtube.com/@mocsolay"
