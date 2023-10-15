@@ -509,17 +509,44 @@ def makeDistributionMessage(message):
         openAdminMenu(sender_id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
                       taj_distribution_text, taj_back_text, taj_operation_cancel_text)
     else:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         try:
             cursor.execute('SELECT user_id FROM users')
             user_list = cursor.fetchall()
-
-            for element in user_list:
-                send_message(element[0], mess)
-
-            cursor.close()
-            connection.close()
+            blockedUser = ""
+            try:
+                for element in user_list:
+                    el = f"{element}"
+                    user = el.replace("(", "").replace(")", "").replace(",", "")
+                    if checkIsUserBannedOrDeleted(user) == "Clear":
+                        blockedUser = user
+                        try:
+                            send_message(user, mess)
+                        except Exception as e:
+                            print(f"Error when sending message {user},{e}")
+                            sendErrorToOwner(f"{user} banned or cleared chat: {e}")
+                            changeUserState(user, "Banned")
+                if checkLanguage(sender_id) == "ru":
+                    openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
+                                  rus_distribution_text, rus_back_text, rus_send_dist_success_text)
+                elif checkLanguage(sender_id) == "en":
+                    openAdminMenu(sender_id, eng_add_admin_text, eng_delete_admin_text, eng_get_all_users_text,
+                                  eng_distribution_text, eng_back_text, eng_send_dist_success_text)
+                elif checkLanguage(sender_id) == "uz":
+                    openAdminMenu(sender_id, uzb_add_admin_text, uzb_delete_admin_text, uzb_get_all_users_text,
+                                  uzb_distribution_text, uzb_back_text, uzb_send_dist_success_text)
+                elif checkLanguage(sender_id) == "kz":
+                    openAdminMenu(sender_id, kazkh_add_admin_text, kazkh_delete_admin_text, kazkh_get_all_users_text,
+                                  kazkh_distribution_text, kazkh_back_text, kazkh_send_dist_success_text)
+                elif checkLanguage(sender_id) == "tj":
+                    openAdminMenu(sender_id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
+                                  taj_distribution_text, taj_back_text, taj_send_dist_success_text)
+            except Exception as e:
+                print(f'{e}')
+                send_message(owner_id, f"Blocked User: {blockedUser} ")
+                cursor.close()
+                connection.close()
         except Exception as e:
             cursor.close()
             connection.close()
@@ -534,22 +561,8 @@ def makeDistributionMessage(message):
             elif checkLanguage(sender_id) == "tj":
                 send_message(sender_id, taj_error_test_text)
             print(f"Error when distribution {e}")
+            sendErrorMessToUser(sender_id)
             sendErrorToOwner(f"Error when distribution: {e},chat id {sender_id}")
-        if checkLanguage(sender_id) == "ru":
-            openAdminMenu(sender_id, rus_add_admin_text, rus_delete_admin_text, rus_get_all_users_text,
-                          rus_distribution_text, rus_back_text, rus_send_dist_success_text)
-        elif checkLanguage(sender_id) == "en":
-            openAdminMenu(sender_id, eng_add_admin_text, eng_delete_admin_text, eng_get_all_users_text,
-                          eng_distribution_text, eng_back_text, eng_send_dist_success_text)
-        elif checkLanguage(sender_id) == "uz":
-            openAdminMenu(sender_id, uzb_add_admin_text, uzb_delete_admin_text, uzb_get_all_users_text,
-                          uzb_distribution_text, uzb_back_text, uzb_send_dist_success_text)
-        elif checkLanguage(sender_id) == "kz":
-            openAdminMenu(sender_id, kazkh_add_admin_text, kazkh_delete_admin_text, kazkh_get_all_users_text,
-                          kazkh_distribution_text, kazkh_back_text, kazkh_send_dist_success_text)
-        elif checkLanguage(sender_id) == "tj":
-            openAdminMenu(sender_id, taj_add_admin_text, taj_delete_admin_text, taj_get_all_users_text,
-                          taj_distribution_text, taj_back_text, taj_send_dist_success_text)
 
 
 # Sends apk file to user
@@ -561,6 +574,7 @@ def sendApkFile(user_id):
         bot.send_document(user_id, f, visible_file_name="AlanProApp.apk")
     except Exception as e:
         print(f"Error when sending apk: {e}")
+        sendErrorMessToUser(user_id)
         sendErrorToOwner(f"Error when sending apk: {e},chat id {user_id}")
 
 
@@ -598,6 +612,11 @@ def openInfoMenu(user_id, button1Text,
     send_button_message(user_id, menuText, buttons)
 
 
+def openSecretMenu(txt):
+    asd = createKeyboardButtons(4, True, 2, delete_user_text, return_admin_text, rus_back_text, send_message_to_user)
+    send_button_message(owner_id, txt, asd)
+
+
 # Send error message to user
 def sendMakeError(user_id):
     if checkLanguage(user_id) == "ru":
@@ -612,11 +631,48 @@ def sendMakeError(user_id):
         send_message(user_id, taj_value_error_text)
 
 
+# Sends channel photos to user
 def sendChannelPhotos(chat_id):
     sendPhoto(chat_id, photo)
     sendPhoto(chat_id, photo_two)
     sendPhoto(chat_id, photo_three)
     sendPhoto(chat_id, photo_four)
+
+
+# Send error message to user
+def sendErrorMessToUser(user_id):
+    if checkLanguage(user_id) == "ru":
+        send_message(user_id, rus_error_test_text)
+    elif checkLanguage(user_id) == "en":
+        send_message(user_id, eng_error_test_text)
+    elif checkLanguage(user_id) == "uz":
+        send_message(user_id, uzb_error_test_text)
+    elif checkLanguage(user_id) == "kz":
+        send_message(user_id, kazkh_error_test_text)
+    elif checkLanguage(user_id) == "tj":
+        send_message(user_id, taj_error_test_text)
+
+
+# Sends message by admin to user
+def sendMessageToUserByAdmin(message):
+    try:
+        sa: str = message.text[:10]
+        recipientId = sa.strip()
+        messToRecipient = message.text[10:]
+
+        if message.text == rus_cancel_text:
+            openSecretMenu(rus_operation_cancel_text)
+        else:
+            if messToRecipient != "":
+                send_message(recipientId, messToRecipient)
+                openSecretMenu(send_success_to_user_mess)
+            else:
+                send_message(owner_id, error_send_message_too)
+    except Exception as e:
+        print(f"Error when sending message to user: {e}")
+        sendErrorToOwner(f"Error when sending message to user: {e}")
+        openSecretMenu(rus_error_test_text)
+
 
 ######################
 # Database functions #
@@ -627,30 +683,33 @@ global receiverId
 
 
 # Saves user to database
-def saveUser(user_id, user_name, user_language, user_post):
+def saveUser(user_id, user_name, user_language, user_post, user_tie, user_status):
     try:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         try:
             cursor.execute(
-                "INSERT INTO users (user_id,user_name,user_language,user_post) VALUES ('%s','%s','%s','%s')" % (
-                    user_id, user_name, user_language, user_post))
+                "INSERT INTO users (user_id,user_name,user_tie,user_status,user_language,user_post) VALUES ('%s','%s','%s','%s','%s','%s')" % (
+                    user_id, user_name, user_tie, user_status, user_language, user_post))
             connection.commit()
             cursor.close()
             connection.close()
             print(f"User: {user_name} saved!")
+            send_message(owner_id, f"User: {user_name},ID: {user_id},UserName: @{user_tie} saved!")
         except Exception as e:
             print(f"Error when saving user: {e},chat id {user_id}")
-            sendErrorToOwner(f"Error when saving user: {e},chat id {user_id}")
+            sendErrorToOwner(f"Error when saving user: {e},chat id {user_id},{user_name},UserName: @{user_tie}")
+            sendErrorMessToUser(user_id)
     except Exception as e:
         print(f"Error when connecting to database: {e},chat id {user_id}")
-        sendErrorToOwner(f"Error when connecting to database: {e},chat id {user_id}")
+        sendErrorMessToUser(user_id)
+        sendErrorToOwner(f"Error when connecting to database: {e},chat id {user_id},{user_name},UserName: @{user_tie}")
 
 
-# Gets all users from database, and write them to UsersList.text file
+# Gets all users from database, and write them to UserList.text file
 def getAllUsers():
     try:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         cursor.execute('SELECT * FROM users')
         user_list = cursor.fetchall()
@@ -660,7 +719,7 @@ def getAllUsers():
             for element in user_list:
                 info += f'{element}'
 
-            with open(user_list_src, "w",
+            with open(user_list_path, "w",
                       encoding="utf-8") as f:
                 f.write(f"{user_list}")
             cursor.close()
@@ -677,7 +736,7 @@ def getAllUsers():
 # Gets all users from database, and send them to admin
 def getAllUsersToAdmin(user_id, user_language):
     try:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         cursor.execute('SELECT * FROM users')
         user_list = cursor.fetchall()
@@ -686,7 +745,7 @@ def getAllUsersToAdmin(user_id, user_language):
         info = ''
         try:
             for element in user_list:
-                lan = element[2]
+                lan = element[4]
                 mainLan = ""
                 if lan == "ru":
                     mainLan = rus_text
@@ -699,30 +758,32 @@ def getAllUsersToAdmin(user_id, user_language):
                 elif lan == "tj":
                     mainLan = taj_text
                 if user_language == "ru":
-                    info += f'{rus_name_text} {element[1]}, {rus_lan_of_user_text} {mainLan}, {rus_post_text} {element[3]}, {id_text} {element[0]};\n'
+                    info += f'{rus_name_text} {element[1]}, {rus_lan_of_user_text} {mainLan}, {rus_state_text} {element[3]}, {rus_post_text} {element[5]}, {id_text} {element[0]};\n'
                 elif user_language == "en":
-                    info += f'{eng_name_text} {element[1]}, {eng_lan_of_user_text} {mainLan}, {eng_post_text} {element[3]}, {id_text} {element[0]};\n'
+                    info += f'{eng_name_text} {element[1]}, {eng_lan_of_user_text} {mainLan}, {eng_state_text} {element[3]},{eng_post_text} {element[5]}, {id_text} {element[0]};\n'
                 elif user_language == "uz":
-                    info += f'{uzb_name_text} {element[1]}, {uzb_lan_of_user_text} {mainLan}, {uzb_post_text} {element[3]}, {id_text} {element[0]};\n'
+                    info += f'{uzb_name_text} {element[1]}, {uzb_lan_of_user_text} {mainLan}, {uzb_state_text} {element[3]},{uzb_post_text} {element[5]}, {id_text} {element[0]};\n'
                 elif user_language == "kz":
-                    info += f'{kazkh_name_text} {element[1]}, {kazkh_lan_of_user_text} {mainLan}, {kazkh_post_text} {element[3]}, {id_text} {element[0]};\n'
+                    info += f'{kazkh_name_text} {element[1]}, {kazkh_lan_of_user_text} {mainLan}, {kazkh_state_text} {element[3]},{kazkh_post_text} {element[5]}, {id_text} {element[0]};\n'
                 elif user_language == "tj":
-                    info += f'{taj_name_text} {element[1]}, {taj_lan_of_user_text} {mainLan}, {taj_post_text} {element[3]}, {id_text} {element[0]};\n'
+                    info += f'{taj_name_text} {element[1]}, {taj_lan_of_user_text} {mainLan}, {taj_state_text} {element[3]},{taj_post_text} {element[5]}, {id_text} {element[0]};\n'
             send_message(user_id, info)
         except Exception as e:
             cursor.close()
             connection.close()
+            sendErrorMessToUser(user_id)
             print(f"Error when getting all users to admin: {e}")
             sendErrorToOwner(f"Error when getting all users to admin: {e},chat id {user_id}")
     except Exception as e:
         print(f"Error when getting all users to admin,connecting to database: {e}")
+        sendErrorMessToUser(user_id)
         sendErrorToOwner(f"Error when getting all users to admin,connecting to database: {e},chat id {user_id}")
 
 
 # Checks is user registered in bot
 def isUserInDb(user_id):
     try:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         cursor.execute("SELECT user_id FROM users WHERE user_id='%s'" % user_id)
 
@@ -733,6 +794,7 @@ def isUserInDb(user_id):
         if res is None:
             return False
         else:
+            changeUserState(user_id, "Clear")
             if checkLanguage(user_id) == "ru":
                 sendAlertMsg(user_id, "ru")
             elif checkLanguage(user_id) == "en":
@@ -746,13 +808,14 @@ def isUserInDb(user_id):
             return True
     except Exception as e:
         print(f"Error when checking user in db: {e}")
+        send_message(user_id, global_error_text)
         sendErrorToOwner(f"Error when checking user in db: {e},chat id {user_id}")
 
 
 # Gets the language of user
 def checkLanguage(user_id):
     try:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
 
         cursor.execute("SELECT user_language FROM users WHERE user_id = '%s'" % user_id)
@@ -768,15 +831,17 @@ def checkLanguage(user_id):
         except Exception as e:
             print(f"Error when checking language: {e}")
             sendErrorToOwner(f"Error when checking language: {e},chat id {user_id}")
+            send_message(user_id, global_error_text)
     except Exception as e:
         print(f"Error when connecting to database and checking language : {e}")
+        send_message(user_id, global_error_text)
         sendErrorToOwner(f"Error when connecting to database and checking language: {e},chat id {user_id}")
 
 
 # Gets status of user
 def getStatus(user_id):
     try:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
 
         cursor.execute("SELECT user_post FROM users WHERE user_id = '%s'" % user_id)
@@ -792,15 +857,17 @@ def getStatus(user_id):
         except Exception as e:
             print(f"Error when getting status: {e}")
             sendErrorToOwner(f"Error when getting status: {e},chat id {user_id}")
+            sendErrorMessToUser(user_id)
     except Exception as e:
         print(f"Error when connecting to database and getting status: {e}")
+        sendErrorMessToUser(user_id)
         sendErrorToOwner(f"Error when  connecting to database and getting status: {e},chat id {user_id}")
 
 
 # Update function to admins to add admins
 def updateUserAdmin(user_id, user_post):
     try:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         try:
             cursor.execute(
@@ -814,16 +881,18 @@ def updateUserAdmin(user_id, user_post):
             cursor.close()
             connection.close()
             print(f'Error when updating user Admin : {e}')
+            sendErrorMessToUser(user_id)
             return "failure"
     except Exception as e:
         print(f"Error when connecting to database and updating userAdmin: {e}")
+        sendErrorMessToUser(user_id)
         sendErrorToOwner(f"Error when connecting to database and updating userAdmin: {e},chat id {user_id}")
 
 
 # To change language of user by him self
 def updateUserSelf(user_id, user_language):
     try:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         try:
             cursor.execute(
@@ -837,16 +906,18 @@ def updateUserSelf(user_id, user_language):
             cursor.close()
             connection.close()
             print(f"Error when updating userSelf: {e} {user_id}")
+            send_message(user_id, global_error_text)
             sendErrorToOwner(f"Error when updating userSelf: {e},chat id {user_id}")
     except Exception as e:
         print(f"Error when connecting to database and updating userSelf: {e}")
+        send_message(user_id, global_error_text)
         sendErrorToOwner(f"Error when connecting to database and updating userSelf: {e},chat id {user_id}")
 
 
 # Deletes user from database
 def deleteUser(user_id):
     try:
-        connection = sqlite3.connect(database_src)
+        connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         try:
             cursor.execute("DELETE FROM users WHERE user_id = '%s' " % user_id)
@@ -860,9 +931,11 @@ def deleteUser(user_id):
             connection.commit()
             cursor.close()
             connection.close()
+            sendErrorMessToUser(user_id)
             return "failure"
     except Exception as e:
         print(f"Error when connecting to database and deleting user: {e}")
+        sendErrorMessToUser(user_id)
         sendErrorToOwner(f"Error when connecting to database and deleting user: {e},chat id {user_id}")
 
 
@@ -871,15 +944,58 @@ def deleteUserAdmin(message):
     try:
         userId = message.text.strip()
         if message.text == rus_cancel_text:
-            asd = createKeyboardButtons(4, True, 2, delete_user_text, return_admin_text, rus_back_text)
-            send_button_message(message.chat.id, rus_operation_cancel_text, asd)
+            openSecretMenu(rus_operation_cancel_text)
         else:
             if deleteUser(userId) == success_text:
-                asd = createKeyboardButtons(4, True, 2, delete_user_text, return_admin_text, rus_back_text)
-                send_button_message(message.chat.id, suc_delete_user, asd)
+                openSecretMenu(suc_delete_user)
             else:
-                asd = createKeyboardButtons(4, True, 2, delete_user_text, return_admin_text, rus_back_text)
-                send_button_message(message.chat.id, rus_error_test_text, asd)
+                openSecretMenu(rus_error_test_text)
     except Exception as e:
         print(f"Error when deleting userAdmin: {e}")
         sendErrorToOwner(f"Error when deleting userAdmin: {e}")
+
+
+# Checks user state in database
+def checkIsUserBannedOrDeleted(user_id):
+    try:
+        connection = sqlite3.connect(database_path)
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT user_status FROM users WHERE user_id = '%s'" % user_id)
+        user = cursor.fetchone()
+        cursor.close()
+        connection.close()
+
+        info = ''
+        try:
+            for element in user:
+                info += f'{element}'
+            return info
+        except Exception as e:
+            print(f"Error when getting banned user: {e}")
+            sendErrorToOwner(f"Error when getting banned user: {e},chat id {user_id}")
+    except Exception as e:
+        print(f"Error when connecting to database and getting banned user: {e}")
+        sendErrorToOwner(f"Error when  connecting to database and banned user: {e},chat id {user_id}")
+
+
+# Changes user state in database
+def changeUserState(user_id, user_state):
+    try:
+        connection = sqlite3.connect(database_path)
+        cursor = connection.cursor()
+        try:
+            cursor.execute(
+                "UPDATE users SET user_status = '%s' WHERE user_id = '%s'" % (user_state, user_id))
+            connection.commit()
+            cursor.close()
+            connection.close()
+            return "success"
+        except Exception as e:
+            cursor.close()
+            connection.close()
+            print(f'Error when updating user to banned : {e}')
+            return "failure"
+    except Exception as e:
+        print(f"Error when connecting to database and updating userAdmin: {e}")
+        sendErrorToOwner(f"Error when connecting to database and updating userAdmin: {e},chat id {user_id}")

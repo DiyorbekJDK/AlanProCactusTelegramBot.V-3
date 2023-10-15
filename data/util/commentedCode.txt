@@ -5,3 +5,12 @@
     # connection.commit()
     # connection.close()
     # cursor.close()
+
+
+   connection = sqlite3.connect('D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/database/UsersDatabase.sql')
+    cursor = connection.cursor()
+    cursor.execute(
+        'CREATE TABLE IF NOT EXISTS users (user_id int primary key, user_name varchar(20), user_tie varchar(30),user_status varchar(20), user_language varchar(20), user_post varchar(20))')
+    connection.commit()
+    connection.close()
+    cursor.close()

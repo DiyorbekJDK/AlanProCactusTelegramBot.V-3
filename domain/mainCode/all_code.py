@@ -13,43 +13,40 @@ from data.util.links import *
 
 bot = telebot.TeleBot(bot_token)
 
-userName = ""
-
 
 def allCode():
     getAllUsers()
 
     @bot.message_handler(commands=['start'])
     def start_command(talk):
-        global userName
         getAllUsers()
         if not isUserInDb(talk.chat.id):
             chooseLanguage(talk.chat.id)
-            userName = talk.from_user.first_name
             getAllUsers()
 
     @bot.callback_query_handler(func=lambda call: True)
     def call_back(call):
         talk_id = call.message.chat.id
+        userName = call.message.chat.first_name
         if call.data == "eng":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "en", "User")
+            saveUser(talk_id, userName, "en", "User", call.message.from_user.username, "Clear")
             sendAlertMsg(talk_id, "en")
         elif call.data == "rus":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "ru", "User")
+            saveUser(talk_id, userName, "ru", "User", call.message.chat.username, "Clear")
             sendAlertMsg(talk_id, "ru")
         elif call.data == "uzb":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "uz", "User")
+            saveUser(talk_id, userName, "uz", "User", call.message.from_user.username, "Clear")
             sendAlertMsg(talk_id, "uz")
         elif call.data == "kazh":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "kz", "User")
+            saveUser(talk_id, userName, "kz", "User", call.message.from_user.username, "Clear")
             sendAlertMsg(talk_id, "kz")
         elif call.data == "taj":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "tj", "User")
+            saveUser(talk_id, userName, "tj", "User", call.message.from_user.username, "Clear")
             sendAlertMsg(talk_id, "tj")
         elif call.data == "checkSub":
             if checkLanguage(talk_id) == "ru":
@@ -109,6 +106,7 @@ def allCode():
 
     @bot.message_handler(commands=["menu"])
     def menu(message):
+        changeUserState(message.chat.id, "Clear")
         if getStatus(message.chat.id) == admin_status_text:
             if checkLanguage(message.chat.id) == "ru":
                 openSimpleAdminMenu(message.chat.id, rus_information_text, rus_channels_text2, rus_admin_settings_text,
@@ -207,8 +205,7 @@ def allCode():
     @bot.message_handler(commands=["hack"])
     def secret(message):
         if message.chat.id == owner_id:
-            asd = createKeyboardButtons(3, True, 2, delete_user_text, return_admin_text, rus_back_text)
-            send_button_message(message.chat.id, secret_settings_text, asd)
+            openSecretMenu(secret_settings_text)
 
     @bot.message_handler(commands=['stop'])
     def stop(message):
@@ -217,6 +214,7 @@ def allCode():
 
     @bot.message_handler()
     def message_from_user(message):
+        changeUserState(message.chat.id, "Clear")
         if checkLanguage(message.chat.id) == "ru":
             if message.text == rus_channels_text2:
                 channels(message)
@@ -277,6 +275,10 @@ def allCode():
             elif message.text == return_admin_text and message.chat.id == owner_id:
                 updateUserAdmin(owner_id, admin_status_text)
                 send_message(message.chat.id, admin_text)
+            elif message.text == send_message_to_user and message.chat.id == owner_id:
+                bot.register_next_step_handler(message, sendMessageToUserByAdmin)
+                cancel = createKeyboardButtons(1, True, 1, rus_cancel_text)
+                send_button_message(message.chat.id, send_id_and_message_me, cancel)
         elif checkLanguage(message.chat.id) == "en":
             if message.text == eng_channels_text2:
                 channels(message)

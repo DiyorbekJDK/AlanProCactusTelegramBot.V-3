@@ -9,6 +9,7 @@ eng_value_error_text = "📛Error! Enter the user ID as shown in the photo below
 eng_name_text = "👤Name:"
 eng_lan_of_user_text = "Language:"
 eng_post_text = "Post:"
+eng_state_text = "State:"
 
 eng_app_text = "🎁Channel App"
 eng_app_update_text = "📌This is a global update: 2.0, to find out what was added in the new update, go to the Telegram channel"
@@ -20,7 +21,7 @@ eng_friends_text = "💵There is his friends:"
 
 eng_language_success = "✅The language has been successfully changed! Use /menu to make the changes take effect."
 eng_send_dist_success_text = "✅The mailing was done successfully!"
-eng_send_dist_text = "✉️Send the text you want to send to all bot users:"
+eng_send_dist_text = "✉️Send the text you want to send to all bot users: \n\n\n⚠️Warning! Users whose status is Banned will not receive the newsletter!"
 eng_admin_add_fail_text = "❌There is some error occurred!"
 eng_admin_add_succes_text = "✅The user has been successfully added to the list of Administrators"
 eng_admin_delete_succes_text = "✅The user has been successfully removed from the list of Administrators"

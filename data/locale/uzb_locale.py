@@ -9,6 +9,7 @@ uzb_value_error_text = "📛Хато! Қуйидаги фотосуратда⬇
 uzb_name_text = "👤Ismi:"
 uzb_lan_of_user_text = "Til:"
 uzb_post_text = "Status:"
+uzb_state_text = "Ho'lati:"
 
 uzb_app_text = "🎁Kanal ilovasi"
 uzb_app_update_text = "📌Bu global yangilanish: 2.0 yangi yangilanishda nima qo'shilganligini bilish uchun Telegram kanalga o'ting"
@@ -20,7 +21,7 @@ uzb_friends_text = "💵Mana uning do'stlari:"
 
 uzb_language_success = "✅Til muvaffaqiyatli o'zgartirildi! O'zgarishlar kuchga kirishi uchun /menu dan foydalaning."
 uzb_send_dist_success_text = "✅Habaringiz muvaffaqiyatli jonatildi!"
-uzb_send_dist_text = "✉️Barcha bot foydalanuvchilariga yubormoqchi bo'lgan matnni jonatin:"
+uzb_send_dist_text = "✉️Barcha bot foydalanuvchilariga yubormoqchi bo'lgan matnni jonatin: \n\n\n⚠️Diqqat! Maqomi Banned bolgan foydalanuvchilar axborot byulletenini olmaydilar!"
 uzb_admin_add_fail_text = "❌Qanday-dur xato yuz berdi!"
 uzb_admin_add_succes_text = "✅Foydalanuvchi Administratorlar ro'yxatiga muvaffaqiyatli qo'shildi"
 uzb_admin_delete_succes_text = "✅Foydalanuvchi Administratorlar ro'yxatidan muvaffaqiyatli o'chirildi"
