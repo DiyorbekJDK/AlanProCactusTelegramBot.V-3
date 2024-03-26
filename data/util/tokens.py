@@ -3,4 +3,4 @@
 #######################
 
 
-bot_token = "none"
+bot_token = ""

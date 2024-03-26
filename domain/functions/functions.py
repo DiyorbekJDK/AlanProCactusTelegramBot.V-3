@@ -256,6 +256,7 @@ def sub(user_id: int, passedText, failedText, errorText, callId: int):
 # Send photo to user
 def sendPhoto(chatId, photoSrc):
     try:
+        bot.send_chat_action(chatId, "upload_photo")
         bot.send_photo(chatId, photoSrc)
     except Exception as e:
         print(f"Error when sending photo: {e}")
@@ -568,6 +569,7 @@ def makeDistributionMessage(message):
 # Sends apk file to user
 def sendApkFile(user_id):
     try:
+        bot.send_chat_action(user_id, "upload_document")
         with open(apk_src, "rb") as file:
             f = file.read()
 
@@ -613,7 +615,8 @@ def openInfoMenu(user_id, button1Text,
 
 
 def openSecretMenu(txt):
-    asd = createKeyboardButtons(4, True, 2, delete_user_text, return_admin_text, rus_back_text, send_message_to_user)
+    asd = createKeyboardButtons(6, True, 2, delete_user_text, return_admin_text, send_message_to_user,
+                                send_mess_to_group, full_list_users, rus_back_text)
     send_button_message(owner_id, txt, asd)
 
 
@@ -674,6 +677,27 @@ def sendMessageToUserByAdmin(message):
         openSecretMenu(rus_error_test_text)
 
 
+# Sends message to a group
+def sendMessageToGroupByAdmin(message):
+    try:
+        sa: str = message.text[:14]
+        recipientId = sa.strip()
+        messToRecipient = message.text[14:]
+
+        if message.text == rus_cancel_text:
+            openSecretMenu(rus_operation_cancel_text)
+        else:
+            if messToRecipient != "":
+                send_message(recipientId, messToRecipient)
+                openSecretMenu(send_success_to_user_mess)
+            else:
+                send_message(owner_id, error_send_message_too)
+    except Exception as e:
+        print(f"Error when sending message to user: {e}")
+        sendErrorToOwner(f"Error when sending message to user: {e}")
+        openSecretMenu(rus_error_test_text)
+
+
 ######################
 # Database functions #
 ######################
@@ -695,7 +719,7 @@ def saveUser(user_id, user_name, user_language, user_post, user_tie, user_status
             cursor.close()
             connection.close()
             print(f"User: {user_name} saved!")
-            send_message(owner_id, f"User: {user_name},ID: {user_id},UserName: @{user_tie} saved!")
+            send_message(owner_id, f"User: {user_name},ID: {user_id},UserName: {user_tie} saved!")
         except Exception as e:
             print(f"Error when saving user: {e},chat id {user_id}")
             sendErrorToOwner(f"Error when saving user: {e},chat id {user_id},{user_name},UserName: @{user_tie}")
@@ -740,8 +764,6 @@ def getAllUsersToAdmin(user_id, user_language):
         cursor = connection.cursor()
         cursor.execute('SELECT * FROM users')
         user_list = cursor.fetchall()
-        cursor.close()
-        connection.close()
         info = ''
         try:
             for element in user_list:
@@ -758,16 +780,18 @@ def getAllUsersToAdmin(user_id, user_language):
                 elif lan == "tj":
                     mainLan = taj_text
                 if user_language == "ru":
-                    info += f'{rus_name_text} {element[1]}, {rus_lan_of_user_text} {mainLan}, {rus_state_text} {element[3]}, {rus_post_text} {element[5]}, {id_text} {element[0]};\n'
+                    info += f'{rus_name_text} {element[1]}, {rus_lan_of_user_text} {mainLan}, {rus_state_text} {element[3]}, {rus_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
                 elif user_language == "en":
-                    info += f'{eng_name_text} {element[1]}, {eng_lan_of_user_text} {mainLan}, {eng_state_text} {element[3]},{eng_post_text} {element[5]}, {id_text} {element[0]};\n'
+                    info += f'{eng_name_text} {element[1]}, {eng_lan_of_user_text} {mainLan}, {eng_state_text} {element[3]},{eng_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
                 elif user_language == "uz":
-                    info += f'{uzb_name_text} {element[1]}, {uzb_lan_of_user_text} {mainLan}, {uzb_state_text} {element[3]},{uzb_post_text} {element[5]}, {id_text} {element[0]};\n'
+                    info += f'{uzb_name_text} {element[1]}, {uzb_lan_of_user_text} {mainLan}, {uzb_state_text} {element[3]},{uzb_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
                 elif user_language == "kz":
-                    info += f'{kazkh_name_text} {element[1]}, {kazkh_lan_of_user_text} {mainLan}, {kazkh_state_text} {element[3]},{kazkh_post_text} {element[5]}, {id_text} {element[0]};\n'
+                    info += f'{kazkh_name_text} {element[1]}, {kazkh_lan_of_user_text} {mainLan}, {kazkh_state_text} {element[3]},{kazkh_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
                 elif user_language == "tj":
-                    info += f'{taj_name_text} {element[1]}, {taj_lan_of_user_text} {mainLan}, {taj_state_text} {element[3]},{taj_post_text} {element[5]}, {id_text} {element[0]};\n'
-            send_message(user_id, info)
+                    info += f'{taj_name_text} {element[1]}, {taj_lan_of_user_text} {mainLan}, {taj_state_text} {element[3]},{taj_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
+            send_message(user_id, info, 'html')
+            cursor.close()
+            connection.close()
         except Exception as e:
             cursor.close()
             connection.close()
@@ -999,3 +1023,38 @@ def changeUserState(user_id, user_state):
     except Exception as e:
         print(f"Error when connecting to database and updating userAdmin: {e}")
         sendErrorToOwner(f"Error when connecting to database and updating userAdmin: {e},chat id {user_id}")
+
+
+def getAllUsersToSecretAdmin():
+    try:
+        connection = sqlite3.connect(database_path)
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM users')
+        user_list = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        info = ''
+        try:
+            for element in user_list:
+                lan = element[4]
+                mainLan = ""
+                if lan == "ru":
+                    mainLan = rus_text
+                elif lan == "en":
+                    mainLan = eng_text
+                elif lan == "uz":
+                    mainLan = uzb_text
+                elif lan == "kz":
+                    mainLan = kaz_text
+                elif lan == "tj":
+                    mainLan = taj_text
+                info += f'{rus_name_text} {element[1]}, {rus_lan_of_user_text} {mainLan},{userName_text}: @{element[2]}, {rus_state_text} {element[3]}, {rus_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
+            send_message(owner_id, info, "html")
+        except Exception as e:
+            cursor.close()
+            connection.close()
+            print(f"Error when getting all users to admin: {e}")
+            sendErrorToOwner(f"Error when getting all users to admin: {e}")
+    except Exception as e:
+        print(f"Error when getting all users to admin,connecting to database: {e}")
+        sendErrorToOwner(f"Error when getting all users to admin,connecting to database: {e}")

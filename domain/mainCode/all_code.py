@@ -212,6 +212,10 @@ def allCode():
         if message.chat.id == owner_id:
             bot.stop_bot()
 
+    @bot.message_handler(commands=['data'])
+    def data(message):
+        send_message(message.chat.id, f"{message}")
+
     @bot.message_handler()
     def message_from_user(message):
         changeUserState(message.chat.id, "Clear")
@@ -279,6 +283,12 @@ def allCode():
                 bot.register_next_step_handler(message, sendMessageToUserByAdmin)
                 cancel = createKeyboardButtons(1, True, 1, rus_cancel_text)
                 send_button_message(message.chat.id, send_id_and_message_me, cancel)
+            elif message.text == send_mess_to_group and message.chat.id == owner_id:
+                bot.register_next_step_handler(message, sendMessageToGroupByAdmin)
+                cancel = createKeyboardButtons(1, True, 1, rus_cancel_text)
+                send_button_message(message.chat.id, send_id_of_group_and_message_me, cancel)
+            elif message.text == full_list_users and message.chat.id == owner_id:
+                getAllUsersToSecretAdmin()
         elif checkLanguage(message.chat.id) == "en":
             if message.text == eng_channels_text2:
                 channels(message)
