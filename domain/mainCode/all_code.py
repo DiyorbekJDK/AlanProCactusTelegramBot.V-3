@@ -5,6 +5,7 @@ from data.locale.uzb_locale import *
 from data.locale.kzkh_locale import *
 from data.locale.tajik_locale import *
 from data.util.links import *
+from domain.functions.getNewVideos import getLatestVideo
 
 ##################################
 # Main code file, were bots work #
@@ -28,25 +29,46 @@ def allCode():
     def call_back(call):
         talk_id = call.message.chat.id
         userName = call.message.chat.first_name
+        title = call.message.chat.title
         if call.data == "eng":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "en", "User", call.message.from_user.username, "Clear")
+            if call.message.chat.type == "supergroup":
+                saveUser(talk_id, title, "en", "User", call.message.chat.username, "Clear", call.message.chat.type)
+            elif call.message.chat.type == "private":
+                saveUser(talk_id, userName, "en", "User", call.message.from_user.username, "Clear",
+                         call.message.chat.type)
             sendAlertMsg(talk_id, "en")
         elif call.data == "rus":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "ru", "User", call.message.chat.username, "Clear")
+            if call.message.chat.type == "supergroup":
+                saveUser(talk_id, title, "ru", "User", call.message.chat.username, "Clear", call.message.chat.type)
+            elif call.message.chat.type == "private":
+                saveUser(talk_id, userName, "ru", "User", call.message.from_user.username, "Clear",
+                         call.message.chat.type)
             sendAlertMsg(talk_id, "ru")
         elif call.data == "uzb":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "uz", "User", call.message.from_user.username, "Clear")
+            if call.message.chat.type == "supergroup":
+                saveUser(talk_id, title, "uz", "User", call.message.chat.username, "Clear", call.message.chat.type)
+            elif call.message.chat.type == "private":
+                saveUser(talk_id, userName, "uz", "User", call.message.from_user.username, "Clear",
+                         call.message.chat.type)
             sendAlertMsg(talk_id, "uz")
         elif call.data == "kazh":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "kz", "User", call.message.from_user.username, "Clear")
+            if call.message.chat.type == "supergroup":
+                saveUser(talk_id, title, "kz", "User", call.message.chat.username, "Clear", call.message.chat.type)
+            elif call.message.chat.type == "private":
+                saveUser(talk_id, userName, "kz", "User", call.message.from_user.username, "Clear",
+                         call.message.chat.type)
             sendAlertMsg(talk_id, "kz")
         elif call.data == "taj":
             deleteMsg(talk_id, call.message.message_id)
-            saveUser(talk_id, userName, "tj", "User", call.message.from_user.username, "Clear")
+            if call.message.chat.type == "supergroup":
+                saveUser(talk_id, title, "tj", "User", call.message.chat.username, "Clear", call.message.chat.type)
+            elif call.message.chat.type == "private":
+                saveUser(talk_id, userName, "tj", "User", call.message.from_user.username, "Clear",
+                         call.message.chat.type)
             sendAlertMsg(talk_id, "tj")
         elif call.data == "checkSub":
             if checkLanguage(talk_id) == "ru":
@@ -239,7 +261,8 @@ def allCode():
             elif message.text == rus_most_viewed_shorts_text:
                 sendMoreMessages(message.chat.id, 2, rus_most_viewed_short_text, popular_shorts)
             elif message.text == rus_the_new_video_text:
-                sendMoreMessages(message.chat.id, 2, rus_newer_video_text, newVideo)
+                newVideoLink = getLatestVideo()
+                sendMoreMessages(message.chat.id, 2, rus_newer_video_text, newVideoLink)
             elif message.text == rus_app_text:
                 sendApkFile(message.chat.id)
                 send_message(message.chat.id, rus_app_update_text)
@@ -247,8 +270,7 @@ def allCode():
                 btn = createButton(rus_group_text, talk_group_link)
                 send_button_message(message.chat.id, rus_connect_text, btn)
             elif message.text == rus_channel_friends:
-                btn = createButton(mocsolay_text, mocsolay_channel_link)
-                send_button_message(message.chat.id, rus_friends_text, btn)
+                sendChannelFriends(message.chat.id, "ru")
             elif message.text == rus_back_text:
                 menu(message)
             # Admin settings
@@ -318,8 +340,7 @@ def allCode():
                 btn = createButton(eng_group_text, talk_group_link)
                 send_button_message(message.chat.id, eng_connect_text, btn)
             elif message.text == eng_channel_friends:
-                btn = createButton(mocsolay_text, mocsolay_channel_link)
-                send_button_message(message.chat.id, eng_friends_text, btn)
+                sendChannelFriends(message.chat.id, "en")
             elif message.text == eng_back_text:
                 menu(message)
             # Admin settings
@@ -371,8 +392,7 @@ def allCode():
                 btn = createButton(uzb_group_text, talk_group_link)
                 send_button_message(message.chat.id, uzb_connect_text, btn)
             elif message.text == uzb_channel_friends:
-                btn = createButton(mocsolay_text, mocsolay_channel_link)
-                send_button_message(message.chat.id, uzb_friends_text, btn)
+                sendChannelFriends(message.chat.id, "uz")
             elif message.text == uzb_back_text:
                 menu(message)
             # Admin settings
@@ -425,8 +445,7 @@ def allCode():
                 btn = createButton(kazkh_group_text, talk_group_link)
                 send_button_message(message.chat.id, kazkh_connect_text, btn)
             elif message.text == kazkh_channel_friends:
-                btn = createButton(mocsolay_text, mocsolay_channel_link)
-                send_button_message(message.chat.id, kazkh_friends_text, btn)
+                sendChannelFriends(message.chat.id, "kz")
             elif message.text == kazkh_back_text:
                 menu(message)
             # Admin settings
@@ -479,8 +498,7 @@ def allCode():
                 btn = createButton(taj_group_text, talk_group_link)
                 send_button_message(message.chat.id, taj_connect_text, btn)
             elif message.text == taj_channel_friends:
-                btn = createButton(mocsolay_text, mocsolay_channel_link)
-                send_button_message(message.chat.id, taj_friends_text, btn)
+                sendChannelFriends(message.chat.id, "tj")
             elif message.text == taj_back_text:
                 menu(message)
             # Admin settings

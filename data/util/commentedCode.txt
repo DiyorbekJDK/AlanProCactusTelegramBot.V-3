@@ -15,3 +15,31 @@
     connection.commit()
     cursor.close()
     connection.close()
+
+
+
+    connection = sqlite3.connect('D:/CanDeleteAnyTime/PycharmProjects/AlanProTgBot/data/database/BotDatabase.sql')
+    cursor = connection.cursor()
+    cursor.execute(
+        'CREATE TABLE IF NOT EXISTS users (user_id int primary key, user_name varchar(20),user_tie varchar(30),user_status varchar(20),user_language varchar(10),user_post varchar(10),chat_type varchar(10))')
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+
+
+
+
+
+                        lan = element[4]
+                    mainLan = ""
+                        if lan == "ru":
+                        mainLan = rus_text
+                    elif lan == "en":
+                        mainLan = eng_text
+                    elif lan == "uz":
+                        mainLan = uzb_text
+                    elif lan == "kz":
+                        mainLan = kaz_text
+                    elif lan == "tj":
+                        mainLan = taj_text

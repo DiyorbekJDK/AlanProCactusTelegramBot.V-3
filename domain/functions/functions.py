@@ -698,6 +698,20 @@ def sendMessageToGroupByAdmin(message):
         openSecretMenu(rus_error_test_text)
 
 
+def sendChannelFriends(chat_id: int, language: str):
+    btn = createMoreButtons(2, mocsolay_text, mocsolay_channel_link, kamronPlay_text, kamron_play_channel_link)
+    if language == "ru":
+        send_button_message(chat_id, rus_friends_text, btn)
+    elif language == "en":
+        send_button_message(chat_id, eng_friends_text, btn)
+    elif language == "uz":
+        send_button_message(chat_id, uzb_friends_text, btn)
+    elif language == "kz":
+        send_button_message(chat_id, kazkh_friends_text, btn)
+    elif language == "tj":
+        send_button_message(chat_id, taj_friends_text, btn)
+
+
 ######################
 # Database functions #
 ######################
@@ -707,14 +721,14 @@ global receiverId
 
 
 # Saves user to database
-def saveUser(user_id, user_name, user_language, user_post, user_tie, user_status):
+def saveUser(user_id, user_name, user_language, user_post, user_tie, user_status, chat_type):
     try:
         connection = sqlite3.connect(database_path)
         cursor = connection.cursor()
         try:
             cursor.execute(
-                "INSERT INTO users (user_id,user_name,user_tie,user_status,user_language,user_post) VALUES ('%s','%s','%s','%s','%s','%s')" % (
-                    user_id, user_name, user_tie, user_status, user_language, user_post))
+                "INSERT INTO users (user_id,user_name,user_tie,user_status,user_language,user_post,chat_type) VALUES ('%s','%s','%s','%s','%s','%s','%s')" % (
+                    user_id, user_name, user_tie, user_status, user_language, user_post, chat_type))
             connection.commit()
             cursor.close()
             connection.close()
@@ -767,28 +781,65 @@ def getAllUsersToAdmin(user_id, user_language):
         info = ''
         try:
             for element in user_list:
-                lan = element[4]
-                mainLan = ""
-                if lan == "ru":
-                    mainLan = rus_text
-                elif lan == "en":
-                    mainLan = eng_text
-                elif lan == "uz":
-                    mainLan = uzb_text
-                elif lan == "kz":
-                    mainLan = kaz_text
-                elif lan == "tj":
-                    mainLan = taj_text
-                if user_language == "ru":
-                    info += f'{rus_name_text} {element[1]}, {rus_lan_of_user_text} {mainLan}, {rus_state_text} {element[3]}, {rus_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
-                elif user_language == "en":
-                    info += f'{eng_name_text} {element[1]}, {eng_lan_of_user_text} {mainLan}, {eng_state_text} {element[3]},{eng_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
-                elif user_language == "uz":
-                    info += f'{uzb_name_text} {element[1]}, {uzb_lan_of_user_text} {mainLan}, {uzb_state_text} {element[3]},{uzb_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
-                elif user_language == "kz":
-                    info += f'{kazkh_name_text} {element[1]}, {kazkh_lan_of_user_text} {mainLan}, {kazkh_state_text} {element[3]},{kazkh_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
-                elif user_language == "tj":
-                    info += f'{taj_name_text} {element[1]}, {taj_lan_of_user_text} {mainLan}, {taj_state_text} {element[3]},{taj_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
+                if element[3] == "Clear":
+                    dialog_type = element[6]
+                    chat_type = ""
+                    post = element[5]
+                    mainPost = ""
+                    if post == admin_status_text:
+                        if user_language == "ru":
+                            mainPost = rus_admin_status_text
+                        elif user_language == "en":
+                            mainPost = eng_admin_status_text
+                        elif user_language == "uz":
+                            mainPost = uzb_admin_status_text
+                        elif user_language == "kz":
+                            mainPost = kazkh_admin_status_text
+                        elif user_language == "tj":
+                            mainPost = taj_admin_status_text
+                    elif post == user_text:
+                        if user_language == "ru":
+                            mainPost = rus_user_status_text
+                        elif user_language == "en":
+                            mainPost = eng_user_status_text
+                        elif user_language == "uz":
+                            mainPost = uzb_user_status_text
+                        elif user_language == "kz":
+                            mainPost = kazkh_user_status_text
+                        elif user_language == "tj":
+                            mainPost = taj_user_status_text
+                    if dialog_type == private_type_text:
+                        if user_language == "ru":
+                            chat_type = rus_chat_type_text
+                        elif user_language == "en":
+                            chat_type = eng_chat_type_text
+                        elif user_language == "uz":
+                            chat_type = uzb_chat_type_text
+                        elif user_language == "kz":
+                            chat_type = kazkh_chat_type_text
+                        elif user_language == "tj":
+                            chat_type = taj_chat_type_text
+                    elif dialog_type == supergroup_type_text:
+                        if user_language == "ru":
+                            chat_type = rus_group_type_text
+                        elif user_language == "en":
+                            chat_type = eng_group_type_text
+                        elif user_language == "uz":
+                            chat_type = uzb_group_type_text
+                        elif user_language == "kz":
+                            chat_type = kazkh_group_type_text
+                        elif user_language == "tj":
+                            chat_type = taj_group_type_text
+                    if user_language == "ru":
+                        info += f'<b>{rus_name_text}</b> <i>{element[1]}</i>, <b>{rus_post_text}</b> <u>{mainPost}</u>,<b>{rus_type_text}</b> {chat_type},<b>{id_text}</b> <code>{element[0]}</code>;\n'
+                    elif user_language == "en":
+                        info += f'<b>{eng_name_text}</b> <i>{element[1]}</i>, <b>{eng_post_text}</b> <u>{mainPost}</u>,<b>{eng_type_text}</b> {chat_type},<b>{id_text}</b> <code>{element[0]}</code>;\n'
+                    elif user_language == "uz":
+                        info += f'<b>{uzb_name_text}</b> <i>{element[1]}</i>, <b>{uzb_post_text}</b> <u>{mainPost}</u>,<b>{uzb_type_text}</b> {chat_type},<b>{id_text}</b> <code>{element[0]}</code>;\n'
+                    elif user_language == "kz":
+                        info += f'<b>{kazkh_name_text}</b> <i>{element[1]}</i>, <b>{kazkh_post_text}</b> <u>{mainPost}</u>,<b>{kazkh_type_text}</b> {chat_type},<b>{id_text}</b> <code>{element[0]}</code>;\n'
+                    elif user_language == "tj":
+                        info += f'<b>{taj_name_text}</b> <i>{element[1]}</i>, <b>{taj_post_text}</b> <u>{mainPost}</u>,<b>{taj_type_text}</b> {chat_type},<b>{id_text}</b> <code>{element[0]}</code>;\n'
             send_message(user_id, info, 'html')
             cursor.close()
             connection.close()
@@ -1048,7 +1099,7 @@ def getAllUsersToSecretAdmin():
                     mainLan = kaz_text
                 elif lan == "tj":
                     mainLan = taj_text
-                info += f'{rus_name_text} {element[1]}, {rus_lan_of_user_text} {mainLan},{userName_text}: @{element[2]}, {rus_state_text} {element[3]}, {rus_post_text} {element[5]}, {id_text} <code>{element[0]}</code>;\n'
+                info += f'{rus_name_text} {element[1]}, {rus_lan_of_user_text} {mainLan},{userName_text}: @{element[2]}, {rus_state_text} {element[3]}, {rus_post_text} {element[5]}, Тип: {element[6]}, {id_text} <code>{element[0]}</code>;\n'
             send_message(owner_id, info, "html")
         except Exception as e:
             cursor.close()

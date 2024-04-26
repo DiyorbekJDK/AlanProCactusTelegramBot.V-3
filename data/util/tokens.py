@@ -4,3 +4,5 @@
 
 
 bot_token = ""
+GOOGLE_API_KEY = ""
+CHANNEL_ID = ""
