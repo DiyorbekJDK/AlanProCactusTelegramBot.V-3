@@ -1,7 +1,5 @@
 # AlanProCactusTelegramBot.V-3
 
-![Telegram Bot](https://github.com/DiyorbekJDK/AlanProCactusTelegramBot.V-3/assets/113772715/some-image-if-you-have)
-
 **Telegram Bot** that provides various information about the YouTube blogger **Alan Pro Cactus**.
 
 Live bot: [@AlanProKaktusBot](https://t.me/AlanProKaktusBot)
