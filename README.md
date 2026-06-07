@@ -1,29 +1,48 @@
 # AlanProCactusTelegramBot.V-3
 
-![photo_2023-09-11_14-37-59](https://github.com/DiyorbekJDK/AlanProCactusTelegramBot.V-3/assets/113772715/bc8ca615-102d-4c6f-96af-ae7f9fb7e04b)
+![Telegram Bot](https://github.com/DiyorbekJDK/AlanProCactusTelegramBot.V-3/assets/113772715/some-image-if-you-have)
 
-Simple bot that can give information about channel AlanProCactus
-There I used pyTelegramBotApi to connect and make functions to my bot, also I used Sqlite3 to register users, with their language and status in a bot
+**Telegram Bot** that provides various information about the YouTube blogger **Alan Pro Cactus**.
 
-Version 3.0📂
-What was added in the new update:⬇️
-ℹ️Updated:
-          🖼Photo of the bot
-          📍Description
-          📒Description during a new conversation
-          🖼Photo description during a new conversation
-          📝And also many other messages
-🔥New Design
-🎮New Features:⬇️
-          1.Ability to change language
-          2.Etc.
-💣Bug fixes:
-         1.After the bot starts, you DO NOT need to re-enter the /start command and select a language
-         2.Error when choosing a language
-         3.Errors when processing messages in different languages
-         4.Fixed typos (random letters) of words
-🎁Added secret settings for admins only😈
-💻New bot structure in the code, which makes the bot work faster and more efficiently
+Live bot: [@AlanProKaktusBot](https://t.me/AlanProKaktusBot)
 
+---
 
-https://t.me/AlanProKaktusBot
+## ✨ Features
+
+- Get latest information and updates about Alan Pro Cactus
+- Multi-language support (change language anytime)
+- User registration and preferences saved in SQLite
+- Beautiful bot interface with photos and descriptions
+- Admin-only secret settings
+- Fast and efficient code structure
+- Smooth user experience from the first start
+
+---
+
+## 🛠 Tech Stack
+
+| Technology              | Purpose                              |
+|------------------------|--------------------------------------|
+| **Python**             | Main programming language            |
+| **pyTelegramBotAPI**   | Telegram Bot API                     |
+| **SQLite3**            | User database (registration, language, status) |
+| **Modular Architecture**| Clean separation of concerns         |
+
+---
+
+## 📁 Project Structure
+
+```bash
+.
+├── data/
+│   ├── database/           # SQLite database
+│   ├── files/              # Static files
+│   ├── locale/             # Multi-language texts
+│   ├── photos/             # Bot images
+│   └── util/               # Utilities
+├── domain/
+│   ├── entryPoint/         # Bot initialization
+│   ├── functions/          # Main bot commands and handlers
+│   └── mainCode/           # Core logic
+└── main.py                 # Entry point (or similar)
